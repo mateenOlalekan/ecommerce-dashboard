@@ -78,7 +78,7 @@ export default function EcommerceDashboard() {
   }
 
   return (
-    <div className="flex h-fit bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
       <div className="flex-1 flex flex-col  p-4 md:p-6">
         <StatsOverview/>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
