@@ -1,15 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import {
-  FiChevronDown, FiFilter, FiSearch, FiEye, FiEdit, FiTrash2, 
-  FiPlus, FiMail, FiPhone, FiCalendar, FiShoppingCart, FiDollarSign,
-  FiMapPin, FiUser, FiStar, FiBox, FiMessageSquare, FiSend, FiPaperclip,
-  FiSmile, FiMoreHorizontal
+import {FiSearch,FiPlus, FiUser,FiMessageSquare, FiSend, FiPaperclip,  FiSmile, FiMoreHorizontal
 } from 'react-icons/fi';
+
 
 
 export default function MessagesPage() {

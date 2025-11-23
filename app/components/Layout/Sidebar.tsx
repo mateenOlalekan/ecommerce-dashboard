@@ -188,7 +188,7 @@ export default function Sidebar({ isMobileOpen = false, onClose }: SidebarProps)
                   data-tooltip-content={item.name}
                   whileHover={{ x: isSidebarOpen ? 4 : 0 }}
                   onClick={() => handleItemClick(index + navigationItems.length)}
-                  className={`flex items-center gap-2 px-3 py-3 text-sm rounded-lg transition-all duration-200 cursor-pointer group ${
+                  className={`flex items-center space-y-3 px-3 py-3 text-sm rounded-lg transition-all duration-200 cursor-pointer group ${
                     activeItem === index + navigationItems.length
                       ? "bg-green-700 shadow-md border-l-4 border-green-300"
                       : "hover:bg-green-700 hover:border-l-4 hover:border-green-500"
