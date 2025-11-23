@@ -1,7 +1,6 @@
 'use client';
-
-import { useState, useEffect,JSX } from "react";
-import { FiLogOut, FiHome, FiBox, FiShoppingCart, FiUser, FiTrendingUp, FiDollarSign, FiBell, FiMessageSquare, FiSettings, FiHelpCircle } from "react-icons/fi";
+import { useState, useEffect} from "react";
+import { FiLogOut, FiShoppingCart } from "react-icons/fi";
 import { Store } from "lucide-react";
 import { motion } from "framer-motion";
 import AOS from "aos";
@@ -10,7 +9,7 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import Link from "next/link";
 import { PanelRightClose, PanelRightOpen, X } from "lucide-react";
-import {NavigationItem,AccountItem,navigationItems,accountItems} from "../../data/data"
+import {navigationItems,accountItems} from "../../data/data"
 
 interface SidebarProps {
   isMobileOpen?: boolean;
