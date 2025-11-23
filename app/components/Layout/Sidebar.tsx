@@ -29,7 +29,7 @@ export default function Sidebar() {
       animate={{ x: 0 }}
       transition={{ type: "spring", damping: 30, stiffness: 300 }}
       className={`fixed lg:relative inset-y-0 left-0 z-30
-                 bg-gradient-to-b from-green-900 to-green-800 
+                 bg-gradient-to-b from-green-900 to-green-800 max-sm:hidden 
                  shadow-xl flex flex-col text-white 
                  transition-all duration-300 
                  ${isSidebarOpen ? "w-60" : "w-16"}`}

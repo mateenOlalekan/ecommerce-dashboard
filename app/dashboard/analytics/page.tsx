@@ -6,7 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import {
  FiShoppingCart, FiUsers, FiTrendingUp, FiPieChart,
-  FiCalendar, FiDownload, FiRefreshCw
+  FiCalendar, FiDownload, FiRefreshCw,FiDollarSign
 } from 'react-icons/fi';
 import { BsThreeDotsVertical, BsTags, BsImage, BsCreditCard } from 'react-icons/bs';
 

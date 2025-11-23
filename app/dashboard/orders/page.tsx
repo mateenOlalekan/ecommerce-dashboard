@@ -6,7 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { FiChevronDown, FiFilter, FiSearch, FiEye, FiEdit, FiTrash2, FiPlus, FiGrid, FiClock, FiCheck, FiX, FiTruck, FiDollarSign, FiPackage } from 'react-icons/fi';
 import { LuShoppingCart, LuStar, LuBox, LuUser, LuCalendar } from 'react-icons/lu';
-import { BsThreeDotsVertical, BsTags, BsImage, BsCreditCard } from 'react-icons/bs';
+import { BsImage, BsCreditCard } from 'react-icons/bs';
 
 
 export default function OrdersPage() {
@@ -236,7 +236,7 @@ export default function OrdersPage() {
           </div>
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" data-aos="fade-up">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" data-aos="fade-up">
             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
               <div className="flex items-center justify-between">
                 <div>
