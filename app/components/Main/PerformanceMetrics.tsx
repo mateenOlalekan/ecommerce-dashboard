@@ -1,5 +1,4 @@
 'use client';
-import { motion} from 'framer-motion';
 import { LuDollarSign, LuShoppingCart} from 'react-icons/lu';
 import { TbShoppingCartDiscount } from 'react-icons/tb';
 import { BsStarHalf} from 'react-icons/bs';
@@ -7,10 +6,8 @@ import { IoStatsChart} from 'react-icons/io5';
 
 export default function PerformanceMetrics(){
     return(
-            <motion.div 
+            <div 
               className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-              data-aos="fade-up"
-              data-aos-delay="200"
             >
               <div className="flex items-center justify-between mb-6">
                 <div>
@@ -27,9 +24,8 @@ export default function PerformanceMetrics(){
                   { label: 'Return Rate', value: '2.4%', change: '-0.6%', icon: <TbShoppingCartDiscount /> },
                   { label: 'Cart Abandonment', value: '18.7%', change: '-3.1%', icon: <LuShoppingCart /> },
                 ].map((metric, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    whileHover={{ x: 5 }}
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                   >
                     <div className="flex items-center">
@@ -47,7 +43,7 @@ export default function PerformanceMetrics(){
                         {metric.change}
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
@@ -65,6 +61,6 @@ export default function PerformanceMetrics(){
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
     )
 }

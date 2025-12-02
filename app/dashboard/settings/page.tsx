@@ -25,6 +25,11 @@ export default function SettingsPage() {
     autoPublishReviews: false
   });
 
+    useEffect(() => {
+    AOS.init({
+      once: true,
+    });
+  }, []);
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 1024);

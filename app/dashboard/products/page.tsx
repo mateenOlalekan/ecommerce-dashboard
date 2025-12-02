@@ -28,6 +28,12 @@ export default function ProductsPage() {
       }
     };
 
+      useEffect(() => {
+    AOS.init({
+      once: true,
+    });
+  }, []);
+
     checkIsMobile();
     AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
     window.addEventListener('resize', checkIsMobile);

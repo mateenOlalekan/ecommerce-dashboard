@@ -1,7 +1,5 @@
 'use client';
 import { useState, useEffect, useCallback} from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import SkeletonLoader from "../app/loading"
 import StatsOverview from './components/Main/StatsOverview';
 import PerformanceMetrics from './components/Main/PerformanceMetrics';
@@ -32,16 +30,7 @@ export default function EcommerceDashboard() {
     checkIsMobile();
     
 
-    try {
-      AOS.init({ 
-        duration: 800, 
-        easing: 'ease-in-out', 
-        once: true,
-        offset: 50
-      });
-    } catch (error) {
-      console.error('AOS initialization failed:', error);
-    }
+
 
     // Simulate initial data loading
     const timer = setTimeout(() => {
@@ -69,7 +58,7 @@ export default function EcommerceDashboard() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <div className="flex-1 flex flex-col overflow-hidden">
-          <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          <main className="flex-1 overflow-y-auto p-1 md:p-2">
             <SkeletonLoader />
           </main>
         </div>
@@ -79,13 +68,13 @@ export default function EcommerceDashboard() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <div className="flex-1 flex flex-col  p-4 md:p-6">
+      <div className="flex-1 flex flex-col">
         <StatsOverview/>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
             <RenueOverview/>
             <RecentOrder/>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 ">
             <TopProduct/>
             <PerformanceMetrics/>
           </div>

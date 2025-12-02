@@ -76,7 +76,7 @@ export default function AnalyticsPage() {
       },
       {
         label: 'Orders',
-        data: [245, 320, 290, 350, 310, 380, 420, 480, 450, 520, 590, 645],
+        data: [24050, 32000, 29000, 3500, 13100, 380, 34200, 24480, 45000, 45200, 45980, 46645],
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         tension: 0.4,
@@ -171,7 +171,7 @@ export default function AnalyticsPage() {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: function(value) {
+          callback: function(value:any) {
             return value + '%';
           },
         },
@@ -199,7 +199,7 @@ export default function AnalyticsPage() {
 
 
         {/* Analytics Content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+        <main className="flex-1">
           {/* Page Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6" data-aos="fade-up">
             <div>
@@ -313,30 +313,30 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Charts Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6" data-aos="fade-up">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-1 mb-6" data-aos="fade-up">
             {/* Revenue & Orders Chart */}
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 lg:col-span-2">
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 ">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-5">
-                <h3 className="text-md font-medium text-gray-800">Revenue & Orders Overview</h3>
-                <div className="flex space-x-2 mt-2 md:mt-0">
+                <h3 className="text-sm sm:text-md font-medium text-gray-800">Revenue & Orders Overview</h3>
+                <div className="flex space-x-1 mt-2 md:mt-0">
                   {['revenue', 'orders', 'both'].map((metric) => (
                     <button
                       key={metric}
                       onClick={() => setActiveMetric(metric)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize ${activeMetric === metric ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                      className={`px-2 py-1 rounded-lg text-[10px] font-medium capitalize ${activeMetric === metric ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                     >
                       {metric}
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="h-80">
+              <div className="h-96">
                 <Line data={salesData} options={revenueChartOptions} />
               </div>
             </div>
 
             {/* Traffic Sources Chart */}
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <div className="bg-white p-5 h-40 rounded-2xl shadow-sm border border-gray-100">
               <div className="flex items-center justify-between mb-5">
                 <h3 className="text-md font-medium text-gray-800">Traffic Sources</h3>
                 <button className="text-sm text-green-600 font-medium">View details</button>

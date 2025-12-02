@@ -1,22 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect,JSX } from 'react';
 import { motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { FiChevronDown, FiFilter, FiSearch, FiEye, FiEdit, FiTrash2, FiPlus, FiGrid, FiClock, FiCheck, FiX, FiTruck, FiDollarSign, FiPackage } from 'react-icons/fi';
-import { LuShoppingCart, LuStar, LuBox, LuUser, LuCalendar } from 'react-icons/lu';
+import {FiChevronDown,FiFilter,FiSearch,FiEye,FiEdit,FiTrash2,FiPlus,FiClock,FiCheck,FiX,FiTruck,FiDollarSign,FiPackage} from 'react-icons/fi';
+import { LuShoppingCart, LuBox, LuUser, LuCalendar } from 'react-icons/lu';
 import { BsImage, BsCreditCard } from 'react-icons/bs';
-
+import { StatusFilter,ordersData,Order } from '@/app/data/data';
+import OrderHeader from "./orderHeader";
 
 export default function OrdersPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
-  const [statusFilters] = useState([
+  const [statusFilters] = useState<StatusFilter[]>([
     { key: 'all', label: 'All Orders', count: 128, color: 'gray' },
     { key: 'pending', label: 'Pending', count: 24, color: 'yellow' },
     { key: 'processing', label: 'Processing', count: 18, color: 'blue' },
@@ -24,6 +25,8 @@ export default function OrdersPage() {
     { key: 'delivered', label: 'Delivered', count: 36, color: 'green' },
     { key: 'cancelled', label: 'Cancelled', count: 8, color: 'red' },
   ]);
+
+
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -41,119 +44,6 @@ export default function OrdersPage() {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // Sample orders data
-  const ordersData = [
-    {
-      id: 'ORD-78945',
-      customer: { name: 'Emily Johnson', email: 'emily@example.com' },
-      date: '2023-11-15T14:30:00Z',
-      status: 'delivered',
-      payment: { method: 'credit_card', status: 'completed' },
-      items: [
-        { name: 'Wireless Bluetooth Headphones', price: 159.99, quantity: 1 },
-        { name: 'Phone Case', price: 24.99, quantity: 1 }
-      ],
-      total: 184.98,
-      shipping: { address: '123 Main St, New York, NY 10001', method: 'express' },
-      tracking: { carrier: 'UPS', number: '1Z999AA10123456784' }
-    },
-    {
-      id: 'ORD-78946',
-      customer: { name: 'Michael Brown', email: 'michael@example.com' },
-      date: '2023-11-14T10:15:00Z',
-      status: 'processing',
-      payment: { method: 'paypal', status: 'completed' },
-      items: [
-        { name: 'Smart Fitness Tracker', price: 89.99, quantity: 2 }
-      ],
-      total: 179.98,
-      shipping: { address: '456 Oak Ave, Los Angeles, CA 90001', method: 'standard' },
-      tracking: null
-    },
-    {
-      id: 'ORD-78947',
-      customer: { name: 'Sarah Williams', email: 'sarah@example.com' },
-      date: '2023-11-14T09:45:00Z',
-      status: 'shipped',
-      payment: { method: 'credit_card', status: 'completed' },
-      items: [
-        { name: 'Organic Cotton T-Shirt', price: 29.99, quantity: 3 },
-        { name: 'Stainless Steel Water Bottle', price: 34.99, quantity: 1 }
-      ],
-      total: 124.96,
-      shipping: { address: '789 Pine Rd, Chicago, IL 60601', method: 'standard' },
-      tracking: { carrier: 'USPS', number: '94001118992213456784' }
-    },
-    {
-      id: 'ORD-78948',
-      customer: { name: 'David Miller', email: 'david@example.com' },
-      date: '2023-11-13T16:20:00Z',
-      status: 'pending',
-      payment: { method: 'credit_card', status: 'pending' },
-      items: [
-        { name: 'Professional Camera Lens', price: 499.99, quantity: 1 }
-      ],
-      total: 499.99,
-      shipping: { address: '321 Elm St, Houston, TX 77001', method: 'express' },
-      tracking: null
-    },
-    {
-      id: 'ORD-78949',
-      customer: { name: 'Jennifer Davis', email: 'jennifer@example.com' },
-      date: '2023-11-12T11:30:00Z',
-      status: 'cancelled',
-      payment: { method: 'paypal', status: 'refunded' },
-      items: [
-        { name: 'Yoga Mat Premium', price: 59.99, quantity: 1 },
-        { name: 'Wireless Phone Charger', price: 24.99, quantity: 2 }
-      ],
-      total: 109.97,
-      shipping: { address: '654 Maple Dr, Phoenix, AZ 85001', method: 'standard' },
-      tracking: null
-    },
-    {
-      id: 'ORD-78950',
-      customer: { name: 'Robert Wilson', email: 'robert@example.com' },
-      date: '2023-11-12T09:15:00Z',
-      status: 'delivered',
-      payment: { method: 'credit_card', status: 'completed' },
-      items: [
-        { name: 'Ceramic Coffee Mug Set', price: 39.99, quantity: 1 }
-      ],
-      total: 39.99,
-      shipping: { address: '987 Cedar Ln, Philadelphia, PA 19101', method: 'standard' },
-      tracking: { carrier: 'FedEx', number: '789012345678' }
-    },
-    {
-      id: 'ORD-78951',
-      customer: { name: 'Lisa Anderson', email: 'lisa@example.com' },
-      date: '2023-11-11T13:45:00Z',
-      status: 'processing',
-      payment: { method: 'credit_card', status: 'completed' },
-      items: [
-        { name: 'Wireless Bluetooth Headphones', price: 159.99, quantity: 1 },
-        { name: 'Phone Case', price: 24.99, quantity: 1 },
-        { name: 'Screen Protector', price: 14.99, quantity: 1 }
-      ],
-      total: 199.97,
-      shipping: { address: '147 Walnut St, San Antonio, TX 78201', method: 'express' },
-      tracking: null
-    },
-    {
-      id: 'ORD-78952',
-      customer: { name: 'James Taylor', email: 'james@example.com' },
-      date: '2023-11-10T15:20:00Z',
-      status: 'shipped',
-      payment: { method: 'paypal', status: 'completed' },
-      items: [
-        { name: 'Stainless Steel Water Bottle', price: 34.99, quantity: 2 }
-      ],
-      total: 69.98,
-      shipping: { address: '258 Birch Ave, San Diego, CA 92101', method: 'standard' },
-      tracking: { carrier: 'USPS', number: '94001118992215678943' }
-    }
-  ];
-
   const filteredOrders = ordersData.filter(order => {
     const matchesStatus = activeFilter === 'all' || order.status === activeFilter;
     const matchesSearch = searchQuery === '' || 
@@ -163,8 +53,8 @@ export default function OrdersPage() {
     return matchesStatus && matchesSearch;
   });
 
-  const getStatusColor = (status) => {
-    const colors = {
+  const getStatusColor = (status: string): string => {
+    const colors: Record<string, string> = {
       pending: 'bg-yellow-100 text-yellow-800',
       processing: 'bg-blue-100 text-blue-800',
       shipped: 'bg-purple-100 text-purple-800',
@@ -174,8 +64,8 @@ export default function OrdersPage() {
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
 
-  const getStatusIcon = (status) => {
-    const icons = {
+  const getStatusIcon = (status: string) => {
+    const icons: Record<string, JSX.Element> = {
       pending: <FiClock className="w-4 h-4" />,
       processing: <FiPackage className="w-4 h-4" />,
       shipped: <FiTruck className="w-4 h-4" />,
@@ -185,7 +75,7 @@ export default function OrdersPage() {
     return icons[status] || <LuBox className="w-4 h-4" />;
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
       year: 'numeric', 
@@ -196,95 +86,24 @@ export default function OrdersPage() {
     });
   };
 
-  const viewOrderDetails = (order) => {
+  const viewOrderDetails = (order: Order) => {
     setSelectedOrder(order);
     setShowOrderDetails(true);
   };
 
-  const updateOrderStatus = (orderId, newStatus) => {
-    // In a real application, this would update the order status in the database
+  const updateOrderStatus = (orderId: string, newStatus: Order['status']) => {
     console.log(`Updating order ${orderId} to status: ${newStatus}`);
-    // For demo purposes, we'll just update the local state
-    const updatedOrders = ordersData.map(order => 
-      order.id === orderId ? { ...order, status: newStatus } : order
-    );
-    // You would typically set this to your state
+
   };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-
-
         {/* Orders Content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">
-          {/* Page Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-6" data-aos="fade-up">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">Order Management</h1>
-              <p className="text-gray-500 mt-1">Manage customer orders and fulfillment</p>
-            </div>
-            <div className="flex space-x-3 mt-4 md:mt-0">
-              <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg flex items-center hover:bg-gray-50">
-                <FiPlus className="mr-2" /> Export
-              </button>
-              <button className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg flex items-center">
-                <FiPlus className="mr-2" /> Create Order
-              </button>
-            </div>
-          </div>
-
-          {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" data-aos="fade-up">
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">Total Orders</p>
-                  <h3 className="text-xl font-semibold text-gray-800 mt-1">{ordersData.length}</h3>
-                </div>
-                <div className="p-3 bg-blue-100 rounded-xl text-blue-600">
-                  <LuShoppingCart className="text-xl" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">Pending Orders</p>
-                  <h3 className="text-xl font-semibold text-gray-800 mt-1">{statusFilters.find(f => f.key === 'pending').count}</h3>
-                </div>
-                <div className="p-3 bg-yellow-100 rounded-xl text-yellow-600">
-                  <FiPackage className="text-xl" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">This Month Revenue</p>
-                  <h3 className="text-xl font-semibold text-gray-800 mt-1">$12,458.75</h3>
-                </div>
-                <div className="p-3 bg-green-100 rounded-xl text-green-600">
-                  <FiDollarSign className="text-xl" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">Avg. Order Value</p>
-                  <h3 className="text-xl font-semibold text-gray-800 mt-1">$156.24</h3>
-                </div>
-                <div className="p-3 bg-purple-100 rounded-xl text-purple-600">
-                  <LuBox className="text-xl" />
-                </div>
-              </div>
-            </div>
-          </div>
+        <main className="flex-1 overflow-y-auto p-2 md:p-3">
+          {/* Page Header and Stats Overview  */}
+          <OrderHeader/>
 
           {/* Filters and Search */}
           <motion.div 
@@ -314,7 +133,7 @@ export default function OrdersPage() {
                     placeholder="Search orders..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full md:w-64"
+                    className="pl-10 pr-4 py-2 border outline-none border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full md:w-64"
                   />
                 </div>
 

@@ -1,16 +1,31 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiChevronDown, FiFilter, FiTrendingUp, FiTrendingDown} from 'react-icons/fi';
-import { LuDollarSign, LuShoppingCart, LuUser } from 'react-icons/lu';
-import { FcPieChart, FcSalesPerformance } from "react-icons/fc";
-import { TbChartArcs, TbShoppingCartDiscount } from 'react-icons/tb';
-import { BsBagCheck, BsStarHalf, BsBoxSeam, BsGraphUp, BsExclamationTriangle } from 'react-icons/bs';
+import { FiChevronDown} from 'react-icons/fi';
+import { TbChartArcs} from 'react-icons/tb';
+import { BsBagCheck} from 'react-icons/bs';
 import {  IoTime } from 'react-icons/io5';  
-import {recentOrders} from "@/app/data/data";
-import StatusBadge from './StatusBadge';
+import {recentOrders,Order} from "@/app/data/data";
 
-export default function Charts({status}){
+  const StatusBadge = ({ status }: { status: Order['status'] }) => {
+    const statusConfig = {
+      Completed: { color: 'bg-green-100 text-green-800', icon: '✓' },
+      Processing: { color: 'bg-yellow-100 text-yellow-800', icon: '⟳' },
+      Shipped: { color: 'bg-blue-100 text-blue-800', icon: '🚚' },
+      Cancelled: { color: 'bg-red-100 text-red-800', icon: '✕' }
+    };
+
+    const config = statusConfig[status];
+    
+    return (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
+        <span className="mr-1">{config.icon}</span>
+        {status}
+      </span>
+    );
+  };
+
+export default function Charts(){
     return(
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Revenue Overview */}

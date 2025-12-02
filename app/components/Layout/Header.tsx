@@ -57,7 +57,7 @@ function Header({ onMenuClick }: HeaderProps) {
 
         {/* Middle Section - Dashboard Title and Search */}
         <div className="flex-1 max-w-2xl mx-4 hidden md:flex items-center gap-6">
-          <h2 className="text-base font-medium text-gray-700 whitespace-nowrap">Dashboard</h2>
+
           
           {/* Search */}
           <div className={`flex items-center border rounded-lg px-3 py-2 w-full max-w-md transition-all duration-200 ${
@@ -81,14 +81,7 @@ function Header({ onMenuClick }: HeaderProps) {
             <Search className="w-5 h-5 text-gray-600" />
           </button>
 
-          {/* Notifications */}
-          <button 
-            className="p-2 rounded-md hover:bg-gray-100 relative transition-colors duration-200"
-            onClick={() => setShowNotifications(!showNotifications)}
-          >
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+
 
           {/* Messages */}
           <button 
@@ -146,7 +139,6 @@ function Header({ onMenuClick }: HeaderProps) {
 
       {/* Mobile Dashboard Title and Search */}
       <div className="md:hidden mt-3 flex items-center justify-between gap-3">
-        <h2 className="text-base font-medium text-gray-700 flex-1">Dashboard</h2>
         <div className={`flex items-center border rounded-lg px-3 py-2 flex-1 transition-all duration-200 ${
           searchFocused ? 'border-green-500 bg-green-50 shadow-sm' : 'border-gray-300 bg-gray-100'
         }`}>
