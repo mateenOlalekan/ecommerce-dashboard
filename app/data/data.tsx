@@ -296,9 +296,6 @@ export const conversationsData = [
 
   ];
 
-
-
-
 // types.ts
 
 export interface Customer {
@@ -455,4 +452,160 @@ export const ordersData: Order[] = [
       shipping: { address: '258 Birch Ave, San Diego, CA 92101', method: 'standard' },
       tracking: { carrier: 'USPS', number: '94001118992215678943' }
     }
+  ];
+
+interface ProductSection{
+  id:string;
+  name:string;
+  category:string;
+  price:number;
+  cost:number;
+  sku:string;
+  status:string;
+  rating:number;
+  reviews:number;
+  img:string;
+  description:string;
+  tags:string[];
+  createdAt:string;
+  updateAt:string;
+}
+
+  const productsData : ProductSection[] = [
+    { 
+      id: 'prod-001', 
+      name: 'Wireless Bluetooth Headphones', 
+      category: 'Electronics',
+      price: 159.99,
+      cost: 89.50,
+      stock: 45,
+      sku: 'WH-1000XM4',
+      status: 'published',
+      rating: 4.8,
+      reviews: 245,
+      image: '/images/products/headphones.jpg',
+      description: 'Premium noise-cancelling wireless headphones with 30-hour battery life.',
+      tags: ['wireless', 'noise-cancelling', 'premium'],
+      createdAt: '2023-10-15T14:30:00Z',
+      updatedAt: '2023-11-05T09:15:00Z'
+    },
+    { 
+      id: 'prod-002', 
+      name: 'Smart Fitness Tracker', 
+      category: 'Electronics',
+      price: 89.99,
+      cost: 45.75,
+      stock: 128,
+      sku: 'FIT-TRACK-PRO',
+      status: 'published',
+      rating: 4.6,
+      reviews: 189,
+      image: '/images/products/fitness-tracker.jpg',
+      description: 'Advanced fitness tracker with heart rate monitoring and GPS.',
+      tags: ['fitness', 'wearable', 'health'],
+      createdAt: '2023-09-22T10:15:00Z',
+      updatedAt: '2023-11-02T14:20:00Z'
+    },
+    { 
+      id: 'prod-003', 
+      name: 'Organic Cotton T-Shirt', 
+      category: 'Clothing',
+      price: 29.99,
+      cost: 12.50,
+      stock: 0,
+      sku: 'TS-ORG-COTTON',
+      status: 'draft',
+      rating: 4.5,
+      reviews: 87,
+      image: '/images/products/tshirt.jpg',
+      description: 'Comfortable organic cotton t-shirt available in multiple colors.',
+      tags: ['organic', 'cotton', 'sustainable'],
+      createdAt: '2023-08-30T16:45:00Z',
+      updatedAt: '2023-11-01T11:30:00Z'
+    },
+    { 
+      id: 'prod-004', 
+      name: 'Stainless Steel Water Bottle', 
+      category: 'Accessories',
+      price: 34.99,
+      cost: 18.25,
+      stock: 76,
+      sku: 'WB-SSTEEL-1L',
+      status: 'published',
+      rating: 4.7,
+      reviews: 132,
+      image: '/images/products/water-bottle.jpg',
+      description: 'Insulated stainless steel water bottle that keeps drinks cold for 24 hours.',
+      tags: ['eco-friendly', 'insulated', 'bpa-free'],
+      createdAt: '2023-10-05T09:20:00Z',
+      updatedAt: '2023-10-28T16:40:00Z'
+    },
+    { 
+      id: 'prod-005', 
+      name: 'Professional Camera Lens', 
+      category: 'Electronics',
+      price: 499.99,
+      cost: 285.00,
+      stock: 12,
+      sku: 'LENS-50MM-F1.8',
+      status: 'published',
+      rating: 4.9,
+      reviews: 76,
+      image: '/images/products/camera-lens.jpg',
+      description: 'Professional-grade 50mm prime lens with f/1.8 aperture for stunning portraits.',
+      tags: ['photography', 'professional', 'prime-lens'],
+      createdAt: '2023-09-10T13:15:00Z',
+      updatedAt: '2023-10-25T10:45:00Z'
+    },
+    { 
+      id: 'prod-006', 
+      name: 'Yoga Mat Premium', 
+      category: 'Fitness',
+      price: 59.99,
+      cost: 28.90,
+      stock: 34,
+      sku: 'YG-MAT-PREMIUM',
+      status: 'published',
+      rating: 4.4,
+      reviews: 54,
+      image: '/images/products/yoga-mat.jpg',
+      description: 'Eco-friendly yoga mat with non-slip surface and carrying strap.',
+      tags: ['yoga', 'fitness', 'eco-friendly'],
+      createdAt: '2023-10-18T11:45:00Z',
+      updatedAt: '2023-10-30T14:15:00Z'
+    },
+    { 
+      id: 'prod-007', 
+      name: 'Ceramic Coffee Mug Set', 
+      category: 'Home & Kitchen',
+      price: 39.99,
+      cost: 19.75,
+      stock: 89,
+      sku: 'MUG-SET-4PC',
+      status: 'published',
+      rating: 4.3,
+      reviews: 43,
+      image: '/images/products/coffee-mug.jpg',
+      description: 'Set of 4 handmade ceramic coffee mugs with modern design.',
+      tags: ['kitchen', 'ceramic', 'handmade'],
+      createdAt: '2023-08-15T14:20:00Z',
+      updatedAt: '2023-10-22T09:30:00Z'
+    },
+    { 
+      id: 'prod-008', 
+      name: 'Wireless Phone Charger', 
+      category: 'Electronics',
+      price: 24.99,
+      cost: 11.50,
+      stock: 156,
+      sku: 'WRLS-CHRGR-15W',
+      status: 'published',
+      rating: 4.2,
+      reviews: 98,
+      image: '/images/products/wireless-charger.jpg',
+      description: 'Fast 15W wireless charger compatible with all Qi-enabled devices.',
+      tags: ['electronics', 'charging', 'wireless'],
+      createdAt: '2023-10-22T16:30:00Z',
+      updatedAt: '2023-11-04T12:20:00Z'
+    },
   ];

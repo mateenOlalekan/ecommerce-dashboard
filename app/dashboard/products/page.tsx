@@ -4,19 +4,51 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { FiChevronDown, FiFilter, FiSearch, FiEye, FiEdit, FiTrash2, FiPlus, FiGrid, FiList } from 'react-icons/fi';
-import { LuShoppingCart, LuStar, LuBox } from 'react-icons/lu';
+import { FiSearch, FiEye, FiEdit, FiTrash2, FiPlus, FiGrid, FiList } from 'react-icons/fi';
+import { LuStar, LuBox } from 'react-icons/lu';
 import { BsThreeDotsVertical, BsTags, BsImage } from 'react-icons/bs';
 
+// Type definitions
+type ProductStatus = 'published' | 'draft';
+type ViewMode = 'grid' | 'list';
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  cost: number;
+  stock: number;
+  sku: string;
+  status: ProductStatus;
+  rating: number;
+  reviews: number;
+  image: string;
+  description: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface StatusFilter {
+  key: string;
+  label: string;
+  count: number;
+}
+
+interface Category {
+  value: string;
+  label: string;
+}
 
 export default function ProductsPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('grid');
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showProductDetails, setShowProductDetails] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [showProductDetails, setShowProductDetails] = useState<boolean>(false);
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -28,20 +60,23 @@ export default function ProductsPage() {
       }
     };
 
-      useEffect(() => {
-    AOS.init({
-      once: true,
-    });
-  }, []);
+    const initAOS = () => {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+      });
+    };
 
     checkIsMobile();
-    AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+    initAOS();
     window.addEventListener('resize', checkIsMobile);
+    
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
   // Sample products data
-  const productsData = [
+  const productsData: Product[] = [
     { 
       id: 'prod-001', 
       name: 'Wireless Bluetooth Headphones', 
@@ -180,14 +215,14 @@ export default function ProductsPage() {
     },
   ];
 
-  const statusFilters = [
+  const statusFilters: StatusFilter[] = [
     { key: 'all', label: 'All Products', count: productsData.length },
     { key: 'published', label: 'Published', count: productsData.filter(product => product.status === 'published').length },
     { key: 'draft', label: 'Draft', count: productsData.filter(product => product.status === 'draft').length },
     { key: 'outofstock', label: 'Out of Stock', count: productsData.filter(product => product.stock === 0).length },
   ];
 
-  const categories = [
+  const categories: Category[] = [
     { value: 'all', label: 'All Categories' },
     { value: 'electronics', label: 'Electronics' },
     { value: 'clothing', label: 'Clothing' },
@@ -208,26 +243,26 @@ export default function ProductsPage() {
     return matchesStatus && matchesSearch;
   });
 
-  const getStatusColor = (status, stock) => {
+  const getStatusColor = (status: ProductStatus, stock: number): string => {
     if (stock === 0) return 'bg-red-100 text-red-800';
     if (status === 'published') return 'bg-green-100 text-green-800';
     if (status === 'draft') return 'bg-yellow-100 text-yellow-800';
     return 'bg-gray-100 text-gray-800';
   };
 
-  const getStatusText = (status, stock) => {
+  const getStatusText = (status: ProductStatus, stock: number): string => {
     if (stock === 0) return 'Out of Stock';
     if (status === 'published') return 'Published';
     if (status === 'draft') return 'Draft';
     return status;
   };
 
-  const viewProductDetails = (product) => {
+  const viewProductDetails = (product: Product) => {
     setSelectedProduct(product);
     setShowProductDetails(true);
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
       year: 'numeric', 
@@ -240,7 +275,6 @@ export default function ProductsPage() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-
 
         {/* Products Content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
@@ -273,7 +307,7 @@ export default function ProductsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-500">Published</p>
-                  <h3 className="text-xl font-semibold text-gray-800 mt-1">{statusFilters.find(f => f.key === 'published').count}</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mt-1">{statusFilters.find(f => f.key === 'published')!.count}</h3>
                 </div>
                 <div className="p-3 bg-green-100 rounded-xl text-green-600">
                   <FiEye className="text-xl" />
@@ -285,7 +319,7 @@ export default function ProductsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-500">Out of Stock</p>
-                  <h3 className="text-xl font-semibold text-gray-800 mt-1">{statusFilters.find(f => f.key === 'outofstock').count}</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mt-1">{statusFilters.find(f => f.key === 'outofstock')!.count}</h3>
                 </div>
                 <div className="p-3 bg-red-100 rounded-xl text-red-600">
                   <LuBox className="text-xl" />
