@@ -1,141 +1,191 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiChevronDown} from 'react-icons/fi';
-import { TbChartArcs} from 'react-icons/tb';
-import { BsBagCheck} from 'react-icons/bs';
-import {  IoTime } from 'react-icons/io5';  
-import {recentOrders,Order} from "@/app/data/data";
+import { useState, useEffect } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { format, subDays, subWeeks, subMonths } from "date-fns";
 
-  const StatusBadge = ({ status }: { status: Order['status'] }) => {
-    const statusConfig = {
-      Completed: { color: 'bg-green-100 text-green-800', icon: '✓' },
-      Processing: { color: 'bg-yellow-100 text-yellow-800', icon: '⟳' },
-      Shipped: { color: 'bg-blue-100 text-blue-800', icon: '🚚' },
-      Cancelled: { color: 'bg-red-100 text-red-800', icon: '✕' }
+// ---------- Types ----------
+type SalesDataPoint = {
+  date: string;       // ISO date or formatted label
+  sales: number;
+  orders: number;
+};
+
+type TimeRange = "7d" | "30d" | "90d";
+
+// ---------- Mock API function (replace with real fetch) ----------
+const fetchSalesData = async (range: TimeRange): Promise<SalesDataPoint[]> => {
+  // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
+  // Generate mock data based on range
+  const now = new Date();
+  const days = range === "7d" ? 7 : range === "30d" ? 30 : 90;
+  const data: SalesDataPoint[] = [];
+
+  for (let i = days - 1; i >= 0; i--) {
+    const date = subDays(now, i);
+    data.push({
+      date: format(date, "MMM dd"), // e.g., "Apr 05"
+      sales: Math.floor(Math.random() * 8000) + 2000, // random between 2000-10000
+      orders: Math.floor(Math.random() * 50) + 10,    // random between 10-60
+    });
+  }
+  return data;
+};
+
+// ---------- Helper to format currency ----------
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+// ---------- Main Component ----------
+export default function ChartSection() {
+  const [timeRange, setTimeRange] = useState<TimeRange>("30d");
+  const [data, setData] = useState<SalesDataPoint[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch data whenever timeRange changes
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await fetchSalesData(timeRange);
+        setData(result);
+      } catch (err) {
+        setError("Failed to load sales data. Please try again.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
+    loadData();
+  }, [timeRange]);
 
-    const config = statusConfig[status];
-    
-    return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
-        <span className="mr-1">{config.icon}</span>
-        {status}
-      </span>
-    );
-  };
+  // Calculate summary statistics
+  const totalSales = data.reduce((acc, point) => acc + point.sales, 0);
+  const totalOrders = data.reduce((acc, point) => acc + point.orders, 0);
+  const avgOrderValue = totalOrders > 0 ? totalSales / totalOrders : 0;
 
-export default function Charts(){
-    return(
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* Revenue Overview */}
-            <motion.div 
-              className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-              data-aos="fade-right"
+  return (
+    <section className="bg-white p-6 rounded-xl shadow-md w-full max-w-6xl mx-auto">
+      {/* Header with title and filter buttons */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2 sm:mb-0">
+          Sales Performance
+        </h2>
+        <div className="flex gap-2">
+          {(["7d", "30d", "90d"] as TimeRange[]).map((range) => (
+            <button
+              key={range}
+              onClick={() => setTimeRange(range)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                timeRange === range
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
             >
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-800">Revenue Overview</h2>
-                  <p className="text-sm text-gray-500 mt-1">Monthly revenue performance</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button className="text-sm text-green-600 hover:text-green-800 font-medium flex items-center">
-                    View Report <FiChevronDown className="ml-1" />
-                  </button>
-                </div>
-              </div>
-              
-              <div className="h-72 bg-gradient-to-br from-green-50 to-indigo-50 rounded-2xl flex flex-col items-center justify-center p-4">
-                <div className="text-center mb-6">
-                  <TbChartArcs className="text-4xl text-green-400 mx-auto mb-3" />
-                  <p className="text-gray-600 font-medium">Revenue Analytics</p>
-                  <p className="text-2xl font-bold text-gray-800 mt-2">$45,263.00</p>
-                  <p className="text-sm text-green-600 mt-1">+12.5% from last month</p>
-                </div>
-                
-                {/* Simple bar chart visualization */}
-                <div className="flex items-end justify-center space-x-2 w-full max-w-md">
-                  {[40, 60, 75, 90, 65, 80, 95, 70, 85, 100, 85, 95].map((height, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ height: 0 }}
-                      animate={{ height: `${height}%` }}
-                      transition={{ duration: 1, delay: index * 0.1 }}
-                      className="w-6 bg-gradient-to-t from-green-400 to-green-600 rounded-t-lg relative group"
-                    >
-                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        ${(height * 452.63).toFixed(0)}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+              {range === "7d" ? "Last 7 days" : range === "30d" ? "Last 30 days" : "Last 90 days"}
+            </button>
+          ))}
+        </div>
+      </div>
 
-            {/* Recent Orders */}
-            <motion.div 
-              className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-              data-aos="fade-left"
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+          <p className="text-sm text-blue-600 font-medium">Total Sales</p>
+          <p className="text-2xl font-bold text-gray-800">{formatCurrency(totalSales)}</p>
+        </div>
+        <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+          <p className="text-sm text-green-600 font-medium">Total Orders</p>
+          <p className="text-2xl font-bold text-gray-800">{totalOrders}</p>
+        </div>
+        <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
+          <p className="text-sm text-purple-600 font-medium">Avg. Order Value</p>
+          <p className="text-2xl font-bold text-gray-800">{formatCurrency(avgOrderValue)}</p>
+        </div>
+      </div>
+
+      {/* Chart area with loading/error states */}
+      {loading && (
+        <div className="h-80 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      )}
+
+      {error && (
+        <div className="h-80 flex items-center justify-center">
+          <p className="text-red-500">{error}</p>
+        </div>
+      )}
+
+      {!loading && !error && data.length > 0 && (
+        <div className="h-80 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={data}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-800">Recent Orders</h2>
-                  <p className="text-sm text-gray-500 mt-1">Latest customer orders</p>
-                </div>
-                <button className="text-sm text-green-600 hover:text-green-800 font-medium flex items-center">
-                  View All <FiChevronDown className="ml-1" />
-                </button>
-              </div>
-              
-              <div className="space-y-4 max-h-72 overflow-y-auto">
-                <AnimatePresence>
-                  {recentOrders.map((order, index) => (
-                    <motion.div 
-                      key={order.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -2, scale: 1.01 }}
-                      className="flex items-center justify-between p-4 bg-gray-50 hover:bg-green-50 rounded-xl transition-all duration-200 border border-transparent hover:border-green-200"
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                          order.status === 'Completed' ? 'bg-green-100' :
-                          order.status === 'Processing' ? 'bg-yellow-100' :
-                          order.status === 'Shipped' ? 'bg-blue-100' : 'bg-red-100'
-                        }`}>
-                          <BsBagCheck className={
-                            order.status === 'Completed' ? 'text-green-600' :
-                            order.status === 'Processing' ? 'text-yellow-600' :
-                            order.status === 'Shipped' ? 'text-blue-600' : 'text-red-600'
-                          } />
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-gray-800">{order.id}</p>
-                          <p className="text-xs text-gray-600">{order.customer}</p>
-                          <div className="flex items-center space-x-2 mt-1">
-                            <IoTime className="text-gray-400 text-xs" />
-                            <p className="text-xs text-gray-500">{order.date}</p>
-                            <span className="text-xs text-gray-400">•</span>
-                            <p className="text-xs text-gray-500">{order.items} items</p>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="text-right">
-                        <p className="text-sm font-bold text-gray-800">{order.amount}</p>
-                        <div className="mt-2">
-                          <StatusBadge status={order.status} />
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1">{order.payment}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          </div>
-           
-    )
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis dataKey="date" stroke="#6b7280" tick={{ fontSize: 12 }} />
+              <YAxis
+                yAxisId="left"
+                stroke="#6b7280"
+                tickFormatter={(value) => `$${value}`}
+              />
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                stroke="#6b7280"
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#fff",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                }}
+                formatter={(value: number, name: string) => {
+                  if (name === "Sales") return [formatCurrency(value), name];
+                  return [value, name];
+                }}
+                labelFormatter={(label) => `Date: ${label}`}
+              />
+              <Legend />
+              <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="sales"
+                name="Sales"
+                stroke="#3b82f6"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                activeDot={{ r: 6 }}
+              />
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="orders"
+                name="Orders"
+                stroke="#10b981"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+    </section>
+  );
 }
